@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std ;
+int main ( ) {
+	int n ;
+	int nr ;
+	int s = 0 ;
+	cin >> n ;
+	while ( n > 0 ) {
+		cin >> nr ;
+		s = s + nr ;
+		n = n - 1 ;
+	}
+	cout << s ;
+}

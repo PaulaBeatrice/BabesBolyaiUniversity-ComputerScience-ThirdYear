@@ -1,0 +1,206 @@
+#include <iostream>
+#include <mpi.h>
+#include <fstream>
+
+#define N 10
+#define M 10
+#define n 3
+#define m 3
+#define lineOffset 1
+#define columnOffset 1
+
+using namespace std;
+
+int computeKernel(int x, int y, int A[][M], int Kernel[][3]) {
+    int result = 0;
+    for (int i_kernel = 0; i_kernel < n; i_kernel++) {
+        for (int j_kernel = 0; j_kernel < m; j_kernel++) {   // parcurgem kernelul
+            int i_matr = x - lineOffset + i_kernel;
+            int j_matr = y - columnOffset + j_kernel;
+
+            // inafara matricii
+            if (i_matr < 0)
+                i_matr = 0;
+            else
+                if (i_matr >= N)
+                    i_matr = N - 1;
+
+            if (j_matr < 0)
+                j_matr = 0;
+            else if (j_matr >= M) j_matr = M - 1;
+
+            result += A[i_matr][j_matr] * Kernel[i_kernel][j_kernel];
+        }
+    }
+    return result;
+}
+
+
+int main()
+{
+    int K[3][3], A[N][M], R[N][M];
+    int start, end;
+
+    MPI_Status status;
+
+    MPI_Init(NULL, NULL);
+
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+    int nr = n / (world_size - 1);
+    int lstart = 0, lend = 0;
+
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    if (world_rank == 0) { // procesul master
+        ifstream file("D:\\FACULTATE\\FACULTATE\\Anul 3\\Semestrul 1\\Programare Paralela si Distribuita\\Tema_3\\Tema_3\\date.txt");
+        if (file.is_open()) {
+            // citeste matricea kernel si o transmitem celorlalte procese
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    file >> K[i][j]; // elementele nucleului
+                }
+            }
+            for (int i = 1; i < world_size; i++)
+                MPI_Send(&K, 9, MPI_INT, i, 0, MPI_COMM_WORLD);
+
+
+            // citeste cate nr linii si le transmite procesului i
+            for (int i = 1; i < world_size; i++) { // indicele procesului la care se va transmite
+                lend = lstart + nr;
+
+                MPI_Send(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de start
+                MPI_Send(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de end
+
+                for (int a = lstart; a < lend; a++)
+                {
+                    for (int b = 0; b < M; b++)
+                        file >> A[a][b];
+                    MPI_Send(&A[a], M, MPI_INT, i, 0, MPI_COMM_WORLD);
+                }
+
+                lstart = lend + 1;
+            }
+
+
+            //if (file.is_open()) {
+            //    int** buffer = new int* [nr];
+            //    for (int i = 0; i < nr; ++i) {
+            //        buffer[i] = new int[M];
+            //        for (int j = 0; j < M; ++j) {
+            //            file >> buffer[i][j]; // citeste nr linii
+            //        }
+            //        MPI_Send(buffer[i], M, MPI_INT, i + 1, 0, MPI_COMM_WORLD); // trimite catre procesul i+1
+            //    }
+
+
+            //    file.close();
+
+
+            //int** buffer = new int* [nr];  // Alocare dinamică pentru array-ul de pointeri către linii
+            //for (int i = 0; i < nr; i++) {
+            //    buffer[i] = new int[M];  // Alocare dinamică pentru fiecare linie
+            //}
+
+            //for (int i = 0; i < N; i++) {
+            //    for (int j = 0; j < M; j++) {
+            //        file >> A[i][j]; // elementele matricei initiale
+            //    }
+
+            //}
+            file.close();
+        }
+        else {
+            cerr << "Eroare la citire\n";
+        }
+
+
+
+        //int start, end, cat, rest;
+        //cat = n / (world_size - 1); // procesul master nu participa la calcul
+        //rest = n % (world_size - 1);
+        //start = 0;
+        //for (int i = 1; i < world_size; i++) {
+        //    end = start + cat;
+        //    if (rest > 0) {
+        //        end++;
+        //        rest--;
+        //    }
+        //    printf("Trimit id-ului %d: %d si %d\n", i, start, end);
+        //    // Trimitem in mod explicit start si end fiecarui copil
+        //    MPI_Send(&start, 1, MPI_INT, i, 0, MPI_COMM_WORLD);// ca destinatar se trece id-ul 
+        //    // un mpi send ramane blocat pana are loc un mpi receive
+        //    MPI_Send(&end, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+        //    MPI_Send(a + start, end - start, MPI_INT, i, 0, MPI_COMM_WORLD);
+        //    MPI_Send(b + start, end - start, MPI_INT, i, 0, MPI_COMM_WORLD);
+        //    start = end;
+        //}
+        /*for (int i = 1; i < world_size; i++) {
+            MPI_Recv(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+            MPI_Recv(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+            for (int a = lstart; a < lend; a++)
+                MPI_Recv(R[a], M, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+        }*/
+        ofstream outputFile("output.txt");
+        if (outputFile.is_open()) {
+            // Primește liniile matricei R de la fiecare proces worker și le scrie în fișier
+            for (int i = 1; i < world_size; i++) {
+                MPI_Recv(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                MPI_Recv(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                for (int a = lstart; a < lend; a++) {
+                    MPI_Recv(R[a], M, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                    for (int b = 0; b < M; b++) {
+                        outputFile << R[a][b] << " "; // scrie valorile în fișier
+                    }
+                    outputFile << endl; // treci la următoarea linie în fișier
+                }
+            }
+
+            outputFile.close(); // închide fișierul de ieșire
+        }
+        else { // I am worker
+            MPI_Recv(&K, 9, MPI_INT, 0, 0, MPI_COMM_WORLD, &status); // primeste matricea kernel
+
+            MPI_Recv(&lstart, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+            MPI_Recv(&lend, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+            for (int a = lstart; a < lend; a++)
+                MPI_Recv(&A[a], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+            // calculez convolutia pentru liniile transmise
+            for (int a = lstart; a < lend; a++)
+                for (int b = 0; b < M; b++)
+                    R[a][b] = computeKernel(a, b, A, K);
+
+            MPI_Send(&lstart, 1, MPI_INT, 0, 0, MPI_COMM_WORLD); // transmit indicii liniilor
+            MPI_Send(&lend, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+            for (int a = lstart; a < lend; a++) // transmit liniile calculate
+                MPI_Send(&R[a], M, MPI_INT, 0, 0, MPI_COMM_WORLD);
+
+
+            //int** buffer = new int* [nr];
+            //for (int i = 0; i < nr; ++i) {
+            //    buffer[i] = new int[M];
+            //    MPI_Recv(buffer[i], M, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); // primește date de la procesul 0
+            //    // Procesează datele aici
+            //}
+
+            //MPI_Recv(&start, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status); // destinatia si sursa trebuie sa aiba acelasi tag
+            //MPI_Recv(&end, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+            //MPI_Recv(a + start, end-start, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+            //MPI_Recv(b + start, end-start, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+            //printf("Sunt id-ul %d: %d si %d\n", world_rank, start, end);
+
+            //for (int i = 0; i < n; i++) {
+            //    c[i] = a[i] + b[i];
+            //}
+            //MPI_Send(&start, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+            //MPI_Send(&end, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+            //MPI_Send(c + start, end - start, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        }
+
+        // Finalize the MPI environment.
+        MPI_Finalize();
+
+    }

@@ -1,0 +1,7 @@
+AA AA = client
+A A = BIBLIOTECAR
+1) inchiriaza o carte
+2) returneaza o carte
+3) adauga o carte 
+4) sterge o carte
+5) vizualizeaza lista de clienti

@@ -1,0 +1,36 @@
+  if (file.is_open()) {
+            // citeste matricea kernel si o transmitem celorlalte procese
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    file >> K[i][j]; // elementele nucleului
+                }
+            }
+
+            for (int i = 1; i < world_size; i++) { // indicele procesului la care se va transmite
+                MPI_Send(&K, n * m, MPI_INT, i, 0, MPI_COMM_WORLD); // trimit kernelul
+
+                lend = lstart + nr;
+
+                if (r > 0) {
+                    lend++;
+                    r--;
+                }
+
+                MPI_Send(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de start
+                MPI_Send(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de end
+
+                for (int a = lstart; a < lend; a++) {
+                    for (int b = 0; b < M; b++)
+                        file >> A[a][b];
+                    
+                }
+                for(int a = lstart; a < lend; a++)
+                    MPI_Send(&A[a], M, MPI_INT, i, 0, MPI_COMM_WORLD);
+
+                lstart = lend + 1;
+            }
+            file.close();
+        }
+        else {
+            cerr << "Eroare la citire\n";
+        }

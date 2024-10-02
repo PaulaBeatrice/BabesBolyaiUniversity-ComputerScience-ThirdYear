@@ -1,0 +1,26 @@
+program -> header namespace bloc
+
+header -> el_h header | e
+el_h -> "#include<iostream>" | "#include<cstring>" | "#include<cmath>"
+
+namespace -> "using" "namespace" "std" ";"
+
+bloc -> "int" "main" "(" ")" "{" l_instr "}"
+l_instr -> instr l_instr | e
+instr ->  atribuire | declare | instr_in | instr_out | instr_cond | instr_cicl
+
+declare -> tip ID ";"
+tip -> "int" | "double"
+
+atribuire -> ID "=" exprs ";"
+exprs -> term expr
+expr -> semn term expr | e
+term -> ID | CONST
+
+semn -> "+" expr | "-" expr | "*" expr | "/" expr | "=" expr | "!=" expr | "<" expr | "<=" expr | ">" expr | ">=" expr | "==" expr
+
+instr_in -> "cin" ">>" ID ";"
+instr_out -> "cout" "<<" exprs ";"
+
+instr_cond -> "if" "(" exprs ")" "{" l_instr "}"
+instr_cicl -> "while" "(" condition ")" "{" l_instr "}"

@@ -1,0 +1,46 @@
+program: header namespace bloc
+       ;
+
+header: IOSTREAM | CMATH | CSTRING
+        ;
+
+namespace: USING NAMESPACE STD SEMICOLON
+        ;
+
+bloc: INT MAIN LPARAN RPARAN  LBRACE l_instr RBRACE
+        ;
+
+l_instr: instr
+        | instr l_instr
+        ;
+
+instr: atribuire | declare | instr_in | instr_out | instr_cond | instr_cicl
+        ;
+
+atribuire: tip ID ASSIGN expr SEMICOLON | ID ASSIGN expr SEMICOLON
+        ;
+
+declare: tip ID SEMICOLON
+        ;
+
+tip: INT | DOUBLE
+        ;
+
+expr: ID | CONST | ID semn expr | CONST semn expr
+        ;
+
+
+semn: PLUS | MINUS | MUL | DIV | MOD | EQ | NE | LT | GT | LET | GET
+    ;
+
+instr_in: CIN RS ID SEMICOLON
+        ;
+
+instr_out: COUT LS expr SEMICOLON
+        ;
+
+instr_cond: IF LPARAN expr RPARAN LBRACE l_instr RBRACE
+        ;
+
+instr_cicl: WHILE LPARAN expr RPARAN LBRACE l_instr RBRACE
+        ;

@@ -1,0 +1,5 @@
+S -> bLl
+S -> i
+L -> SB
+B -> e
+B -> pL

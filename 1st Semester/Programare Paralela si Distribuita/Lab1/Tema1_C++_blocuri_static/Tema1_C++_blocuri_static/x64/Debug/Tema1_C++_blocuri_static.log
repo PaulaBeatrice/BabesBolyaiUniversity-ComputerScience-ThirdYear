@@ -1,0 +1,8 @@
+﻿  Tema1_C++_blocuri_static.cpp
+C:\FACULTATE\Anul 3\Semestrul 1\Programare Paralela si Distribuita\Tema1_C++_blocuri_static\Tema1_C++_blocuri_static\Tema1_C++_blocuri_static.cpp(147,15): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\FACULTATE\Anul 3\Semestrul 1\Programare Paralela si Distribuita\Tema1_C++_blocuri_static\Tema1_C++_blocuri_static\Tema1_C++_blocuri_static.cpp(162,15): warning C4244: '=': conversion from '_Rep' to 'int', possible loss of data
+          with
+          [
+              _Rep=double
+          ]
+  Tema1_C++_blocuri_static.vcxproj -> C:\FACULTATE\Anul 3\Semestrul 1\Programare Paralela si Distribuita\Tema1_C++_blocuri_static\x64\Debug\Tema1_C++_blocuri_static.exe

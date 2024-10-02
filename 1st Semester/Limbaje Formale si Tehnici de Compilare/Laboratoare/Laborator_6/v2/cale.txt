@@ -1,0 +1,2 @@
+cd "/mnt/d/FACULTATE/FACULTATE/Anul 3/Semestrul 1/Limbaje Formale si Tehnici de Compilare/Laboratoare/Laborator_6/v2"
+nlink rez.obj -lio -o rez.exe

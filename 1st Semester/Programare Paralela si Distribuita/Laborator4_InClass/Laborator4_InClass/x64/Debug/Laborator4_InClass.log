@@ -1,0 +1,3 @@
+﻿  Laborator4_InClass.cpp
+D:\FACULTATE\FACULTATE\Anul 3\Semestrul 1\Programare Paralela si Distribuita\Laborator4_InClass\Laborator4_InClass\Laborator4_InClass.cpp(98,13): warning C4849: OpenMP 'collapse' clause ignored in 'for' directive
+  Laborator4_InClass.vcxproj -> D:\FACULTATE\FACULTATE\Anul 3\Semestrul 1\Programare Paralela si Distribuita\Laborator4_InClass\x64\Debug\Laborator4_InClass.exe

@@ -1,0 +1,204 @@
+#include <iostream>
+#include <mpi.h>
+#include <fstream>
+
+#define N 10
+#define M 10
+#define n 3
+#define m 3
+#define lineOffset 1
+#define columnOffset 1
+
+using namespace std;
+
+int computeKernel(int x, int y, int A[][M], int Kernel[][3]) {
+    int result = 0;
+    for (int i_kernel = 0; i_kernel < n; i_kernel++) {
+        for (int j_kernel = 0; j_kernel < m; j_kernel++) {   // parcurgem kernelul
+            int i_matr = x - lineOffset + i_kernel;
+            int j_matr = y - columnOffset + j_kernel;
+
+            // inafara matricii
+            if (i_matr < 0)
+                i_matr = 0;
+            else
+                if (i_matr >= N)
+                    i_matr = N - 1;
+
+            if (j_matr < 0)
+                j_matr = 0;
+            else if (j_matr >= M) j_matr = M - 1;
+
+            //cout << A[i_matr][j_matr];
+
+            result += A[i_matr][j_matr] * Kernel[i_kernel][j_kernel];
+        }
+    }
+    return result;
+}
+
+
+int main()
+{
+    int K[3][3], A[N][M], R[N][M];
+   
+    MPI_Status status;
+
+    MPI_Init(NULL, NULL);
+
+    int world_size;
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+    int nr = N / (world_size - 1);
+    int lstart = 0, lend = 0;
+
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+    if (world_rank == 0) { // procesul master
+        ifstream file("D:\\FACULTATE\\FACULTATE\\Anul 3\\Semestrul 1\\Programare Paralela si Distribuita\\Tema_3\\date.txt");
+        if (file.is_open()) {
+            // citeste matricea kernel si o transmitem celorlalte procese
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    file >> K[i][j]; // elementele nucleului
+                }
+            }
+            for (int i = 1; i < world_size; i++)
+                MPI_Send(&K, 9, MPI_INT, i, 0, MPI_COMM_WORLD);
+
+            for (int a = 0; a < N; a++)
+            {
+                for (int b = 0; b < M; b++)
+                    file >> A[a][b];
+            }
+
+
+            // citeste cate nr linii si le transmite procesului i
+            //for (int i = 1; i < world_size; i++) { // indicele procesului la care se va transmite
+            //    lend = lstart + nr;
+
+            //    MPI_Send(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de start
+            //    MPI_Send(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de end
+
+            //    for (int a = lstart; a < lend; a++)
+            //    {
+            //        for (int b = 0; b < M; b++)
+            //            file >> A[a][b];
+            //        MPI_Send(&A[a], M, MPI_INT, i, 0, MPI_COMM_WORLD); // trimitem linia a la procesul i
+            //    }
+            //    // prima linie a procesului i este necesara pentru calculul kernelului de la procesului i - 1, daca i nu este primul proces
+            //    if(i > 1)
+            //        MPI_Send(&A[lstart], M, MPI_INT, i - 1, 0, MPI_COMM_WORLD);
+
+            //    // ultima linie a procesului i este necesara pentru calculul kernelului de la procesului i + 1, daca i nu este ultimul proces
+            //    if(i < world_size - 1)
+            //        MPI_Send(&A[lend-1], M, MPI_INT, i + 1, 0, MPI_COMM_WORLD);
+
+            //    lstart = lend;
+            //}
+            file.close();
+
+
+
+            for (int i = 1; i < world_size; i++) { // indicele procesului la care se va transmite
+                lend = lstart + nr;
+
+                MPI_Send(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de start
+                MPI_Send(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem indicele de end
+
+                cout << "pr " << i << " " << "st" << lstart << " end" << lend << '\n';
+
+                if (i > 1)
+                    MPI_Send(&A[lstart - 1], M, MPI_INT, i, 0, MPI_COMM_WORLD); // transmitem linia anterioara
+
+                for (int a = lstart; a < lend; a++) // transmitem liniile pt care se va calcula
+                {
+                    for (int b = 0; b < M; b++)
+                        file >> A[a][b];
+                    MPI_Send(&A[a], M, MPI_INT, i, 0, MPI_COMM_WORLD); // trimitem linia a la procesul i
+                }
+
+                if (i < world_size - 1) // transmitem linia urmatoare
+                    MPI_Send(&A[lend], M, MPI_INT, i, 0, MPI_COMM_WORLD);
+
+                lstart = lend;
+            }
+        }
+        else {
+            cerr << "Eroare la citire\n";
+        }
+        ofstream outputFile("output.txt");
+        if (outputFile.is_open()) {
+            // Primește liniile matricei R de la fiecare proces worker și le scrie în fișier
+            for (int i = 1; i < world_size; i++) {
+                MPI_Recv(&lstart, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                MPI_Recv(&lend, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                for (int a = lstart; a < lend; a++) {
+                    MPI_Recv(&R[a], M, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+                    for (int b = 0; b < M; b++) {
+                        outputFile << R[a][b] << " "; // scrie valorile în fișier
+                    }
+                    outputFile << endl; // treci la următoarea linie în fișier
+                }
+               
+            }
+
+            outputFile.close(); // închide fișierul de ieșire
+        }
+    }
+    else { // I am worker
+        MPI_Recv(&K, 9, MPI_INT, 0, 0, MPI_COMM_WORLD, &status); // primeste matricea kernel
+
+       /* if (world_rank == 2)
+        {
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    cout << K[i][j] << " ";
+            cout << endl;
+        }*/
+
+        MPI_Recv(&lstart, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&lend, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        if(world_rank > 1)
+            MPI_Recv(&A[lstart - 1], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        for (int a = lstart; a < lend; a++)
+                MPI_Recv(&A[a], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        if(world_size < world_size - 1)
+            MPI_Recv(&A[lend + 1], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+        /*cout << "pr " << world_rank << " " << "st" << lstart << " end" << lend << '\n';*/
+        //for(int a = lstart; a < lend; a++)
+        //    MPI_Recv(&A[a], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+        //if (world_rank > 1)
+        //    MPI_Recv(&A[lstart], M, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+        //// ultima linie a procesului i este necesara pentru calculul kernelului de la procesului i + 1, daca i nu este ultimul proces
+        //if (world_rank < world_size - 1)
+        //    MPI_Recv(&A[lend - 1], M, MPI_INT, 0, 0, MPI_COMM_WORLD, & status);
+
+        // calculez convolutia pentru liniile transmise
+        for (int a = lstart; a < lend; a++)
+            for (int b = 0; b < M; b++)
+                R[a][b] = computeKernel(a, b, A, K);
+
+     /*   if (world_rank == 2)
+        {
+            for (int a = lstart - 1; a <= lend; a++)
+            {
+                for (int b = 0; b < M; b++)
+                    cout << A[a][b] << " ";
+                cout << '\n';
+            }
+        }*/
+     
+
+        MPI_Send(&lstart, 1, MPI_INT, 0, 0, MPI_COMM_WORLD); // transmit indicii liniilor
+        MPI_Send(&lend, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        for (int a = lstart; a < lend; a++) // transmit liniile calculate
+            MPI_Send(&R[a], M, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    }
+    MPI_Finalize();
+
+}
