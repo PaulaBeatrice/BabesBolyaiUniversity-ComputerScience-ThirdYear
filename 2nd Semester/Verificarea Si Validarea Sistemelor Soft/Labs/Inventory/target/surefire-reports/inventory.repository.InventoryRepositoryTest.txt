@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: inventory.repository.InventoryRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 16, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.237 s <<< FAILURE! - in inventory.repository.InventoryRepositoryTest
+addPart_InvalidMaximum_ECP{String}  Time elapsed: 0.02 s  <<< ERROR!
+org.junit.jupiter.api.extension.ParameterResolutionException: No ParameterResolver registered for parameter [java.lang.String arg0] in method [void inventory.repository.InventoryRepositoryTest.addPart_InvalidMaximum_ECP(java.lang.String)].
+

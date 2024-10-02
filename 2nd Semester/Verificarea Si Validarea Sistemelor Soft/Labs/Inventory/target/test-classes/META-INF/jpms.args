@@ -1,0 +1,4 @@
+--patch-module
+inventory=_
+--add-reads
+inventory=ALL-UNNAMED

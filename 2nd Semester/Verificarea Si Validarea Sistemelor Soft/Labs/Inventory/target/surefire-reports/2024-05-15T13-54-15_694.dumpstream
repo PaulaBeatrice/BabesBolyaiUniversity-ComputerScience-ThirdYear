@@ -1,0 +1,12 @@
+# Created at 2024-05-15T13:54:16.957
+May 15, 2024 1:54:16 PM org.junit.jupiter.engine.discovery.MethodSelectorResolver resolve
+
+# Created at 2024-05-15T13:54:16.958
+WARNING: Possible configuration error: method [void inventory.repository.InventoryRepositoryTest.addPart_InvalidMaximum_ECP(java.lang.String)] resulted in multiple TestDescriptors [org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor, org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor]. This is typically the result of annotating a method with multiple competing annotations such as @Test, @RepeatedTest, @ParameterizedTest, @TestFactory, etc.
+
+# Created at 2024-05-15T13:54:17.078
+May 15, 2024 1:54:17 PM org.junit.jupiter.engine.discovery.MethodSelectorResolver resolve
+
+# Created at 2024-05-15T13:54:17.079
+WARNING: Possible configuration error: method [void inventory.repository.InventoryRepositoryTest.addPart_InvalidMaximum_ECP(java.lang.String)] resulted in multiple TestDescriptors [org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor, org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor]. This is typically the result of annotating a method with multiple competing annotations such as @Test, @RepeatedTest, @ParameterizedTest, @TestFactory, etc.
+

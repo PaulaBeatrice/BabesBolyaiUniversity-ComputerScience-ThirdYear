@@ -1,0 +1,10 @@
+inventory\repository\mock\InventoryRepositoryTestWithMock.class
+inventory\service\InventoryTestStep3Test.class
+inventory\service\mock\InventoryTestStep3Test.class
+inventory\service\InventoryServiceTest.class
+inventory\model\InventoryTest.class
+inventory\repository\InventoryRepositoryTest.class
+inventory\service\mock\InventoryTestStep2Test.class
+inventory\service\InventoryServiceTestWithMockConstructorTest.class
+inventory\service\InventoryTestStep2Test.class
+inventory\service\mock\InventoryServiceTestWithMockConstructorTest.class
