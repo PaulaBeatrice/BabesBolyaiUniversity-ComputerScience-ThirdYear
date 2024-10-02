@@ -1,0 +1,7 @@
+Optional, de parcurs sectiunile de mai jos:
+- Principii de testare: cartea "The Art of Software Testing" - G. Myers, capitolul 2, sectiunea Software Testing Principles (paginile 35-41 in pdf).
+- Axiome ale testarii: cartea "Software Testing" - R. Patton, capitolul 3,  sectiunea Testing Axioms (paginile 55-63 in pdf).
+ 
+Cele doua lucrari sunt disponibile in Class Materials -> References. 
+
+Lectura placuta tuturor!

@@ -1,0 +1,9 @@
+cerinta posibila la examenul scris: sa calculam un numar de conditionale
+numarul de conditionare masoara daca o problema numerica este bine conditionata sau prost conditionata
+in Culproan.pdf sunt aplicatii pentru numarul de conditionale
+trebe sa ne uitam peste problemele astea din Culproan.pdf
+probleme pt lab 5: pb 1, pb 1, pb 2, pb3 
+problema obl este pb3
+pt pb1:
+pt pb1: avem nevoie de o rutina de cod care calculeaza numarul de conditionare al unei matrici
+pt pb3: punctul de plecare este formulele de calcul pentru numarul de continionare pentru o functie

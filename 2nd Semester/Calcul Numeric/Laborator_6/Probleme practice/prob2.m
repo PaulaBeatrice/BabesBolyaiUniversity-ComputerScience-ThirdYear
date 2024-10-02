@@ -1,0 +1,1 @@
+syms x;f = exp(x ^ 2 - 1);noduri = [1 1.1 1.2 1.3 1.4];y = eval(subs(f, x, noduri));xi = 1.25;val = Lagrange(noduri, y, xi)
