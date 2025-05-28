@@ -1,0 +1,1 @@
+a == 5 -> daca ( b ) atunci b = a sfdaca

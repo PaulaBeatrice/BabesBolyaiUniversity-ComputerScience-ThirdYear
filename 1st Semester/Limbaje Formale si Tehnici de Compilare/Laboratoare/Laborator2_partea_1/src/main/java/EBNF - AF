@@ -1,0 +1,17 @@
+<AF> -> <multimea_starilor> <starea_initiala> <nr_stari_finale> <stari_finale> <nr_tranzitii> <l_tranzitii>;
+<multimea_starilor> -> <l_stari> ;
+<l_stari> -> <stare> | <stare> <l_stari>
+<starea_initiala> -> <stare>
+<stare> -> <ID>
+<ID> -> "^[a-zA-Z_][a-zA-Z0-9_]{0,7}$"
+<nr_stari_finale> -> <nr>
+<stari_finale> -> <stare_finala> | <stare_finala> <stari_finale>
+<stare_finala> -> <ID>
+<nr_tranzitii> -> <nr>
+<nr> -> "^[1-9][0-9]+$"
+<l_tranzitii> -> <tranzitie> | <tranzitie> <l_tranzitii>
+<tranzitie> -> <stare_1> <stare_2> <simbol>
+<stare_1> -> <ID>
+<stare_2> -> <ID>
+<simbol> -> <ID> | <NR>
+<NR> -> "[0-9]*"

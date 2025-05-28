@@ -1,0 +1,10 @@
+int main ( ) { 
+    int raza ;
+    double pi,aria ; 
+    pi = 3.14;
+    raza = 1 ;
+    p = 2 * pi * raza ;
+    aria = pi * raza*raza*0;
+    cout << p << endl <<aria<<turn12345;
+    return 0 $raza;
+ }

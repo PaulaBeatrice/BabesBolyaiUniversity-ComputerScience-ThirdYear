@@ -1,0 +1,4 @@
+S -> aSP
+P -> c
+P -> bSc
+S -> i

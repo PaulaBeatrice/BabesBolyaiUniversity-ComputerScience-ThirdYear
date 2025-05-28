@@ -1,0 +1,40 @@
+program -> include_instrs main
+
+include_instrs -> include_instr include_instrs | ε
+include_instr -> "#include" "<" header ">"
+header -> "iostream"
+
+main -> "int" "main" "(" ")" "{" bloc "}"
+bloc -> instructions "return" expression ";"
+
+instructions -> instruction instructions | ε
+
+instruction -> declaration | attribution | io_instr | if_instr | while_instr
+
+declaration -> data_type id declarations ";"
+declarations -> declarations "," id | ε
+
+data_type -> "int" | "float" | "int_list"
+attribution -> id "=" expression ";"
+expression -> term expression_tail
+expression_tail -> binary_op_all term expression_tail | ε
+term -> id | const
+
+binary_op_bool -> "=" | "!" | "<" | ">"
+binary_op_all -> "+" expression_tail | "-" expression_tail | "*" expression_tail | "/" expression_tail
+
+io_instr -> cout_instr | cin_instr
+cout_instr -> "std::cout" "<" "<" expression ";"
+
+cin_instr -> "std::cin" ">" ">" id ";"
+
+if_instr -> "if" "(" condition ")" "{" instructions "}" if_instr_else
+if_instr_else -> "else" "{" instructions "}" | ε
+while_instr -> "while" "(" condition ")" "{" instructions "}"
+
+condition -> condition_first expression condition_tail
+condition_tail -> ε | binary_op_bool expression condition_tail
+condition_first -> "!" | ε
+
+id -> ID
+const -> CONST
