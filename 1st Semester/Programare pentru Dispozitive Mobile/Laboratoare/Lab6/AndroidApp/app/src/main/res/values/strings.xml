@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Library</string>
-    <string name="item">Book</string>
-    <string name="items">Books</string>
-    <string name="login">Login</string>
-</resources>
