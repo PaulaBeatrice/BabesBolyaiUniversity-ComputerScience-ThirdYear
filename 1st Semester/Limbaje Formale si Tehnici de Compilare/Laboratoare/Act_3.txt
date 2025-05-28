@@ -1,6 +1,0 @@
-Clasa AF:
-	alfabet: list<string>
-	tranzitii: list<string>
-	stari finale: list<string>
-	stare initiala: string
-	nr tranzitii: int

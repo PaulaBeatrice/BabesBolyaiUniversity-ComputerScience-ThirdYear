@@ -1,4 +1,0 @@
-S -> abA
-S -> e
-A -> Saa
-A -> b
