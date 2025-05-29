@@ -1,0 +1,42 @@
+1. stakeholder  /   o persoană care manifestă un interes particular pentru succesul sau eşecul unui produs soft
+2. assurance  /  pentru a preveni bug-urile, în procesul de dezvoltare, calitatea este abordată din perspectiva procesului, quality ...(engl)
+3. verificare  /  cuvant asociat intrebarii "Dezvoltam corect produsul?"
+4. creste  /  costul de corectare(eliminare) al defectelor ... odata cu parcurgerea etapelor de dezvoltare e softului
+5. checklists  /  Inspectarea Fagan se bazeaza pe utilizarea ...(engl) pentru determinarea erorilor
+6. destructiv  /  testarea este un proces ...
+7. specificatiei  /  in testarea black-box, datele de intrare se aleg pe baza ... problemei
+8. ec  /  mulţimea datelor de intrare/ieșire pentru care programul are comportament similar
+9. boundary  /  valoare a domeniului pentru care comportamentul programului se modifică
+10. testcase  /   mulțime de date de intrare, condiții de execuție și rezultate așteptate, proiectate cu un anumit scop
+11. drumurilor  /   graful fluxului de control permite vizualizarea tuturor ... din unitatea de program
+12. baza  /   multimea drumurilor independente formeaza multimea drumurilor de ... a unui CFG
+13. ciclomatica  /   metrică software aplicată pentru măsurarea cantitativă a complexităţii logice a unui program, complexitatea ...
+14. conditie  /   expresie logica dintr-un varf de decizie
+15. dezavantaj  /   proiectarea cazurilor de testare poate incepe doar dupa implementare reprezinta un ... in cazul testarii white-box
+16. unit  /   ... testing = testarea individuală a unor unități separate dintr-un sistem software
+17. integration  /   ... testing = nivel de testare  în care modulele individuale se combină şi se testează ca un grup
+18. system  /   ... testing = verifică dacă produsul dezvoltat respectă obiectivele iniţiale
+19. level  /   testing ... = o serie de activităţi de testare asociate unei etape din procesul de dezvoltare al produsului soft("Ce testez?")
+20. type  /   testing ... = mijlocul prin care un obiectiv al testării, stabilit anterior pentru un nivel de testare, poate fi realizat("Cum testez?")
+
+
+stakeholder  /   o persoană care manifestă un interes particular pentru succesul sau eşecul unui produs soft
+assurance  /  pentru a preveni bug-urile, în procesul de dezvoltare, calitatea este abordată din perspectiva procesului, quality ...(engl)
+verificare  /  cuvant asociat intrebarii "Dezvoltam corect produsul?"
+creste  /  costul de corectare(eliminare) al defectelor ... odata cu parcurgerea etapelor de dezvoltare e softului
+checklists  /  Inspectarea Fagan se bazeaza pe utilizarea ...(engl) pentru determinarea erorilor
+destructiv  /  testarea este un proces ...
+specificatiei  /  in testarea black-box, datele de intrare se aleg pe baza ... problemei
+ec  /  mulţimea datelor de intrare/ieșire pentru care programul are comportament similar
+boundary  /  valoare a domeniului pentru care comportamentul programului se modifică
+testcase  /   mulțime de date de intrare, condiții de execuție și rezultate așteptate, proiectate cu un anumit scop
+drumurilor  /   graful fluxului de control permite vizualizarea tuturor ... din unitatea de program
+baza  /   multimea drumurilor independente formeaza multimea drumurilor de ... a unui CFG
+ciclomatica  /   metrică software aplicată pentru măsurarea cantitativă a complexităţii logice a unui program, complexitatea ...
+conditie  /   expresie logica dintr-un varf de decizie
+dezavantaj  /   proiectarea cazurilor de testare poate incepe doar dupa implementare reprezinta un ... in cazul testarii white-box
+unit  /   ... testing = testarea individuală a unor unități separate dintr-un sistem software
+integration  /   ... testing = nivel de testare  în care modulele individuale se combină şi se testează ca un grup
+18. system  /   ... testing = verifică dacă produsul dezvoltat respectă obiectivele iniţiale
+level  /   testing ... = o serie de activităţi de testare asociate unei etape din procesul de dezvoltare al produsului soft("Ce testez?")
+type  /   testing ... = mijlocul prin care un obiectiv al testării, stabilit anterior pentru un nivel de testare, poate fi realizat("Cum testez?")
