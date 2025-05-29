@@ -1,0 +1,12 @@
+.completed-task {
+    border: 10 10 10 10;
+    border-radius: 10%;
+    border-color: #7ab076; /* Example color for completed tasks */
+  }
+  
+  /* Define a CSS class for non-completed tasks */
+  .not-completed-task {
+    border: 10 10 10 10;
+    border-radius: 5%;
+    border-color: #3f3f3f; /* Example color for non-completed tasks */
+  }
