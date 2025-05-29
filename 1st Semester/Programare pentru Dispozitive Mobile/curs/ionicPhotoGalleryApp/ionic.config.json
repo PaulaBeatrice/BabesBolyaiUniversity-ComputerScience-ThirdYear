@@ -1,0 +1,7 @@
+{
+  "name": "iPhotoGalleryApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

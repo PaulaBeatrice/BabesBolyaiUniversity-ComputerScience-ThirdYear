@@ -1,0 +1,7 @@
+{
+  "name": "ionicAppStateNetworkApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
