@@ -1,0 +1,6 @@
+inventar - done
+restaurant
+rezervari - done
+taskuri
+mesaje
+teste
